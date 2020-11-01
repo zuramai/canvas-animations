@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Animations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container ">
+        <h1>CANVAS ANIMATIONS</h1>
+        <div class="flex flex-wrap pb-5">
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>LINEAR</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="linear" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>EASE</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="ease" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>QUINTIC EASE</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="quintic-ease" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>QUADRATIC EASE</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="quadratic-ease" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>SINE EASE IN OUT</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="sine-ease" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full mb-5 px-5">
+                <div class="card shadow-lg w-full bg-white rounded-md px-5 py-3">
+                    <div class="card-header flex justify-between pb-5">
+                        <div></div>
+                        <h4 class='text-2xl text-center text-gray-600'>EXPONENTIAL EASE</h4>
+                        <button onclick="javascript:render()" class='px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition duration-200'>Play</button>
+                    </div>
+                    <div class="card-body">
+                        <canvas  id="exponential-ease" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

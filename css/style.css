@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins';
+    color: #232323;
+    min-height: 100vh;
+    background-color: rgb(217, 220, 228);
+}
+.container {
+    width: 100%;
+    padding: 0 15px;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 2rem 0;
+}
