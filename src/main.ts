@@ -4,6 +4,9 @@ import { Easing, EasingTypes, ProgressParam } from './types';
 let cardBody = <HTMLDivElement>document.querySelector('.card-body')
 let canvases = document.querySelectorAll('canvas');
 
+// Play button
+document.querySelectorAll('.btn-play').forEach(btn => btn.addEventListener('click', () => render()))
+
 let contexts: {[key in EasingTypes]: CanvasRenderingContext2D|null} = {
     "linear": null,
     "ease": null,
@@ -26,7 +29,7 @@ let canvasHeight = canvases[0].height;
 
 // Set Image
 let image = new Image;
-image.src = "/images/king.png";
+image.src = "images/king.png";
 image.width = image.width/5;
 image.height = image.height/5;
 let imagePadding = 10;
