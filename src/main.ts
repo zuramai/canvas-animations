@@ -1,134 +1,76 @@
 import './css/style.css'
-let cardBody = document.querySelector('.card-body')
+import * as easing from './easings';
+import { Easing, EasingTypes, ProgressParam } from './types';
+let cardBody = <HTMLDivElement>document.querySelector('.card-body')
 let canvases = document.querySelectorAll('canvas');
 
-let linear = document.getElementById('linear');
-let linearctx = linear.getContext('2d');
+let contexts: {[key in EasingTypes]: CanvasRenderingContext2D|null} = {
+    "linear": null,
+    "ease": null,
+    "quadratic-ease": null,
+    "exponential-ease": null,
+    "quintic-ease": null,
+    "sine-ease": null,
+}
 
-let ease = document.getElementById('ease');
-let easectx = ease.getContext('2d');
-
-// Quintic Ease
-let quinticEase = document.getElementById('quintic-ease');
-let quinticEasectx = quinticEase.getContext('2d');
-
-// Quadratic Ease
-let quadraticEase = document.getElementById('quadratic-ease');
-let quadraticEasectx = quadraticEase.getContext('2d');
-
-// Sine Ease In Out
-let sineEase = document.getElementById('sine-ease');
-let sineEasectx = sineEase.getContext('2d');
-
-// Exponential Ease
-let exponentialEase = document.getElementById('exponential-ease');
-let exponentialEasectx = exponentialEase.getContext('2d');
+// Generate contexts
+for(const [key, _] of Object.entries(contexts)) {
+    let el = <HTMLCanvasElement>document.getElementById(key)
+    contexts[key as EasingTypes] = el.getContext('2d')
+}
 
 // Set Canvas Width
 canvases.forEach(canvas => canvas.width = cardBody.offsetWidth)
-let canvasWidth = linear.width;
-let canvasHeight = linear.height;
-
+let canvasWidth = canvases[0].width;
+let canvasHeight = canvases[0].height;
 
 // Set Image
 let image = new Image;
-image.src = "images/king.png";
+image.src = "src/images/king.png";
 image.width = image.width/5;
 image.height = image.height/5;
 let imagePadding = 10;
 
-
-function getEase(currentProgress, start, distance, steps, power) {
-    currentProgress /= steps/2; // currentProgress = 0.1; distance = 100; steps = 100
-    if (currentProgress < 1) { 
-      return (distance/2)*(Math.pow(currentProgress, power)) + start;
-    } 
-    currentProgress -= 2;
-    return distance/2*(Math.pow(currentProgress,power)+2) + start;
+let easings: {[key: string]: Easing} = {
+    "linear": easing.linearEase,
+    "ease": easing.expEaseInOut,
+    "quadratic-ease": easing.quadraticEase,
+    "exponential-ease": easing.expEaseInOut,
+    "quintic-ease": easing.quinticEase,
+    "sine-ease": easing.sineEaseInOut
 }
 
-function getQuadraticEase(currentProgress, start, distance, steps) {
-    currentProgress /= steps/2;
-    if (currentProgress <= 1) {
-      return (distance/2)*currentProgress*currentProgress + start;
-    }
-    currentProgress--;
-    return -1*(distance/2) * (currentProgress*(currentProgress-2) - 1) + start;
-}
+function getProgress(type: "x"|"y", params: ProgressParam) {
+    let from = type == "x" ? params.xFrom : params.yFrom
+    let to = type == "x" ? params.xTo : params.yTo
 
-function getQuinticEase(currentProgress, start, distance, steps) {
-  currentProgress /= steps/2;
-  if (currentProgress < 1) {
-    return (distance/2)*(Math.pow(currentProgress, 5)) + start;
-  }
-  currentProgress -= 2;
-  return distance/2*(Math.pow(currentProgress, 5) + 2) + start;
-}
-
-
-function expEaseInOut(currentProgress, start, distance, steps) {
-    currentProgress /= steps/2;
-    if (currentProgress < 1) return distance/2 * Math.pow( 2, 10 * (currentProgress - 1) ) + start;
-   currentProgress--;
-    return distance/2 * ( -Math.pow( 2, -10 * currentProgress) + 2 ) + start;
-  };
-  
-  
-function sineEaseInOut(currentProgress, start, distance, steps) {
-    return -distance/2 * (Math.cos(Math.PI*currentProgress/steps) - 1) + start;
-}
-  
-function getX(params) {
-    let distance = params.xTo - params.xFrom;
+    let distance = to - from;
     let steps = params.frames;
     let progress = params.frame;
 
-    if(params.mode == 'linear')  return distance / steps * progress;
-    else if(params.mode == 'ease') return getEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'quadratic-ease') return getQuadraticEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'quintic-ease') return getQuinticEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'sine-ease') return sineEaseInOut(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'exponential-ease') return expEaseInOut(progress, params.yFrom, distance, steps, 3);
-}
-function getY(params) {
-    let distance = params.yTo - params.yFrom;
-    let steps = params.frames;
-    let progress = params.frame;
-
-    if(params.mode == 'linear')  return distance / steps * progress;
-    else if(params.mode == 'ease') return getEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'quadratic-ease') return getQuadraticEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'quintic-ease') return getQuinticEase(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'sine-ease') return sineEaseInOut(progress, params.yFrom, distance, steps, 3);
-    else if(params.mode == 'exponential-ease') return expEaseInOut(progress, params.yFrom, distance, steps, 3);
+    return easings[params.type](progress, from, distance, steps, 3)
 }
 
-
-function drawImage(params) {
-    params.ctx.clearRect(0,0,canvasWidth,canvasHeight);
-    drawBackground(params.ctx)
-    params.ctx.drawImage(image, getX(params), getY(params), image.width, image.height);
-
+function drawImage(ctx: CanvasRenderingContext2D, params: ProgressParam) {
+    ctx.clearRect(0,0,canvasWidth,canvasHeight);
+    drawBackground(ctx)
+    ctx.drawImage(image, getProgress("x", params), getProgress("y", params), image.width, image.height);
 
     if(params.frame < params.frames) {
         params.frame = params.frame + 1;
-        requestAnimationFrame(() => drawImage(params))
+        requestAnimationFrame(() => drawImage(ctx, params))
     }
 }
 
-
-function drawBackground(ctx) {
+function drawBackground(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "green";
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
 }
 
-
-function draw(ctx, mode) {
+function draw(ctx: CanvasRenderingContext2D, type: EasingTypes) {
     drawBackground(ctx)
-    // Draw the image
-    drawImage({
-        mode,
-        ctx,
+    drawImage(ctx, {
+        type,
         frame: 0,
         frames: 100,
         xFrom: imagePadding,
@@ -136,14 +78,11 @@ function draw(ctx, mode) {
         yFrom: imagePadding,
         yTo: canvasHeight - image.height - imagePadding,
     })
-}
+}   
 
 function render() {
-    this.draw(linearctx, 'linear');
-    this.draw(easectx, 'ease');
-    this.draw(quadraticEasectx, 'quadratic-ease');
-    this.draw(exponentialEasectx, 'exponential-ease');
-    this.draw(quinticEasectx, 'quintic-ease');
-    this.draw(sineEasectx, 'sine-ease');
+    for(const [key, value] of Object.entries(contexts)) {
+        draw(value as CanvasRenderingContext2D, key as EasingTypes)
+    }
 }
 render();
