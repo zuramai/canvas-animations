@@ -26,7 +26,7 @@ let canvasHeight = canvases[0].height;
 
 // Set Image
 let image = new Image;
-image.src = "src/images/king.png";
+image.src = "/images/king.png";
 image.width = image.width/5;
 image.height = image.height/5;
 let imagePadding = 10;
