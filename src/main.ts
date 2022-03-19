@@ -14,6 +14,7 @@ let contexts: {[key in EasingTypes]: CanvasRenderingContext2D|null} = {
     "exponential-ease": null,
     "quintic-ease": null,
     "sine-ease": null,
+    "ease-out-bounce": null,
 }
 
 // Generate contexts
@@ -40,7 +41,8 @@ let easings: {[key: string]: Easing} = {
     "quadratic-ease": easing.quadraticEase,
     "exponential-ease": easing.expEaseInOut,
     "quintic-ease": easing.quinticEase,
-    "sine-ease": easing.sineEaseInOut
+    "sine-ease": easing.sineEaseInOut,
+    "ease-out-bounce": easing.easeOutBounce
 }
 
 function getProgress(type: "x"|"y", params: ProgressParam) {
